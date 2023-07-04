@@ -32,6 +32,10 @@ void mqtt_publish(const char* topic, const char* payload) {
     client.publish(topic, payload);
 }
 
+void mqtt_subscribe(const char* topic) {
+    client.subscribe(topic);
+}
+
 void mqtt_re_connect() {
   while (!client.connected()) {
     Serial.println("Attempting MQTT connection...");

@@ -14,6 +14,7 @@ void event_handler_button(struct _lv_obj_t *obj, lv_event_t event);
 void event_handler_gesture(struct _lv_obj_t *obj, lv_event_t event);
 void init_image_roller();
 void mqtt_callback(char *topic, byte *payload, unsigned int length);
+void mqtt_subscribe(const char *topic);
 
 unsigned long next_lv_task = 0;
 
@@ -79,6 +80,7 @@ unsigned long next_image_task = 0;
 
 void loop()
 {
+  mqtt_subscribe("imageroller/action");
   if (next_lv_task < millis())
   {
     lv_task_handler();
