@@ -6,6 +6,7 @@
 #include "images/image_lemon.h"
 #include "images/image_grapes.h"
 #include "images/image_watermelon.h"
+#include "images/image_luckyseven.h"
 #include "ImageRoller.h"
 #include "DFRobot_PAJ7620U2.h"
 
@@ -37,6 +38,7 @@ void init_image_roller()
   rip->add_image(add_image(&image_lemon, 0, 0, event_handler_button));
   rip->add_image(add_image(&image_grapes, 0, 0, event_handler_button));
   rip->add_image(add_image(&image_watermelon, 0, 0, event_handler_button));
+  rip->add_image(add_image(&image_luckyseven, 0, 0, event_handler_button));
 }
 
 // ----------------------------------------------------------------------------
