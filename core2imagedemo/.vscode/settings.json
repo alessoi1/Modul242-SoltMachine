@@ -15,6 +15,11 @@
         "*.HLASM*": "hlasm",
         "*.HLA*": "hlasm",
         "functional": "cpp",
-        "new": "cpp"
-    }
+        "new": "cpp",
+        "string": "cpp",
+        "cstdlib": "cpp",
+        "*.tcc": "cpp",
+        "algorithm": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

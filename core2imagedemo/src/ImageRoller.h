@@ -13,11 +13,14 @@
 class ImageRoller {
 public:
 	ImageRoller();
-    void add_image(lv_obj_t * image);
+    void add_image(lv_obj_t * image, String imageName);
+    void add_names();
+    String get_name_of_image();
     lv_obj_t * next();
     void start();
     bool is_stopped();
     unsigned long next_timeout();
+    String image_names[MAX_NUM_OF_IMAGES];
 private:
     lv_obj_t * image_objs[MAX_NUM_OF_IMAGES];
     uint8_t num_of_images = 0;

@@ -34,18 +34,17 @@ void event_handler_button(struct _lv_obj_t *obj, lv_event_t event)
 
 void init_image_roller()
 {
-  rip->add_image(add_image(&image_cherry, 0, 0, event_handler_button));
-  rip->add_image(add_image(&image_lemon, 0, 0, event_handler_button));
-  rip->add_image(add_image(&image_grapes, 0, 0, event_handler_button));
-  rip->add_image(add_image(&image_watermelon, 0, 0, event_handler_button));
-  rip->add_image(add_image(&image_luckyseven, 0, 0, event_handler_button));
+  rip->add_image(add_image(&image_cherry, 0, 0, event_handler_button), "lemon");
+  rip->add_image(add_image(&image_lemon, 0, 0, event_handler_button), "grapes");
+  rip->add_image(add_image(&image_grapes, 0, 0, event_handler_button), "watermelon");
+  rip->add_image(add_image(&image_watermelon, 0, 0, event_handler_button), "luckyseven");
+  rip->add_image(add_image(&image_luckyseven, 0, 0, event_handler_button), "cherry");
 }
 
 // ----------------------------------------------------------------------------
 // MQTT callback
 // ----------------------------------------------------------------------------
-void mqtt_callback(char *topic, byte *payload, unsigned int length)
-{
+void mqtt_callback(char *topic, byte *payload, unsigned int length) {
   // Parse Payload into String
   char *buf = (char *)malloc((sizeof(char) * (length + 1)));
   memcpy(buf, payload, length);
@@ -68,6 +67,7 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
   }
 }
 
+
 // ----------------------------------------------------------------------------
 // UI event handlers
 // ----------------------------------------------------------------------------
@@ -88,11 +88,11 @@ void loop()
     lv_task_handler();
     next_lv_task = millis() + 5;
   }
-  if (next_image_task < millis())
-  {
+  if (next_image_task < millis()) {
     rip->next();
     next_image_task = rip->next_timeout();
   }
+  
   DFRobot_PAJ7620U2::eGesture_t gesture = gestureSensor.getGesture();
   if (gesture != gestureSensor.eGestureNone)
   {
@@ -101,7 +101,6 @@ void loop()
   }
   mqtt_loop();
 }
-
 // ----------------------------------------------------------------------------
 // MAIN SETUP
 // ----------------------------------------------------------------------------
