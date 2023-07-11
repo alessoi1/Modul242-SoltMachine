@@ -99,7 +99,7 @@ void loop()
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
-     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
+    mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
   mqtt_loop();
 }
