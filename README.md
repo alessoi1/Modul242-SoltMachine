@@ -13,8 +13,10 @@ To run this Slot Machine project, you will need the following:
 To get started with the Slot Machine project, follow these steps:
 
 1. Clone this repository to your local machine using the following command:
-```git clone https://github.com/your-username/slot-machine.git```
-2. Add a config.cpp to the base folder of the project with the following content:
+```
+git clone https://github.com/your-username/slot-machine.git
+```
+3. Add a config.cpp to the base folder of the project with the following content:
 ```
 #ifndef CONFIG_H_
 #define CONFIG_H_
