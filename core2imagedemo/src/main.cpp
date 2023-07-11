@@ -17,6 +17,10 @@ void init_image_roller();
 void mqtt_callback(char *topic, byte *payload, unsigned int length);
 void mqtt_subscribe(const char *topic);
 
+String imagePayload;
+String image2Payload;
+String image3Payload;
+
 unsigned long next_lv_task = 0;
 
 ImageRoller *rip = new ImageRoller();
@@ -29,7 +33,6 @@ void event_handler_button(struct _lv_obj_t *obj, lv_event_t event)
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
-     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
 }
 
@@ -40,6 +43,27 @@ void init_image_roller()
   rip->add_image(add_image(&image_grapes, 0, 0, event_handler_button), "watermelon");
   rip->add_image(add_image(&image_watermelon, 0, 0, event_handler_button), "luckyseven");
   rip->add_image(add_image(&image_luckyseven, 0, 0, event_handler_button), "cherry");
+}
+
+void checkImages()
+{
+  if (!imagePayload.isEmpty() && !image2Payload.isEmpty() && !image3Payload.isEmpty())
+  {
+    if (imagePayload == image2Payload && image2Payload == image3Payload)
+    {
+      // Set side LEDs to green
+      set_sideled_color(0, 255, 0);
+    } else if(imagePayload != image2Payload && image2Payload != image3Payload && imagePayload != image3Payload) {
+      set_sideled_color(255, 0, 0);
+    } else {
+      set_sideled_color(255, 255, 0);
+    }
+
+    // Clear the payloads
+    imagePayload = "";
+    image2Payload = "";
+    image3Payload = "";
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -64,11 +88,25 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
       if (rip->is_stopped())
       {
         rip->start();
-        mqtt_publish("imageroller/image3", rip->get_name_of_image().c_str());
       }
     }
   }
+  else if (String(topic) == "imageroller/image")
+  {
+    imagePayload = payloadS;
+  }
+  else if (String(topic) == "imageroller/image2")
+  {
+    image2Payload = payloadS;
+  }
+  else if (String(topic) == "imageroller/image3")
+  {
+    image3Payload = payloadS;
+  }
+  checkImages();
 }
+
+
 
 // ----------------------------------------------------------------------------
 // UI event handlers
@@ -99,11 +137,10 @@ void loop()
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
+    mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
   mqtt_loop();
 }
-
-
 
 // ----------------------------------------------------------------------------
 // MAIN SETUP
