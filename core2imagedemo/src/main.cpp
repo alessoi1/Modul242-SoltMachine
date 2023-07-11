@@ -64,6 +64,7 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
       if (rip->is_stopped())
       {
         rip->start();
+        mqtt_publish("imageroller/image3", rip->get_name_of_image().c_str());
       }
     }
   }
@@ -83,7 +84,6 @@ unsigned long next_image_task = 0;
 
 void loop()
 {
-  mqtt_subscribe("imageroller/action");
   if (next_lv_task < millis())
   {
     lv_task_handler();
@@ -99,7 +99,6 @@ void loop()
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
-    mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
   mqtt_loop();
 }
