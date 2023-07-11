@@ -51,18 +51,16 @@ void checkImages()
   {
     if (imagePayload == image2Payload && image2Payload == image3Payload)
     {
-      // Set side LEDs to green
-      set_sideled_color(0, 255, 0);
-    } else if(imagePayload != image2Payload && image2Payload != image3Payload && imagePayload != image3Payload) {
-      set_sideled_color(255, 0, 0);
-    } else {
-      set_sideled_color(255, 255, 0);
+      set_sideled_color(10, 10, GREEN);
     }
-
-    // Clear the payloads
-    imagePayload = "";
-    image2Payload = "";
-    image3Payload = "";
+    else if (imagePayload != image2Payload && image2Payload != image3Payload && imagePayload != image3Payload)
+    {
+      set_sideled_color(10, 10, ORANGE);
+    }
+    else
+    {
+      set_sideled_color(10, 10, RED);
+    }
   }
 }
 
@@ -88,6 +86,7 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
       if (rip->is_stopped())
       {
         rip->start();
+        mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
       }
     }
   }
@@ -103,10 +102,7 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length)
   {
     image3Payload = payloadS;
   }
-  checkImages();
 }
-
-
 
 // ----------------------------------------------------------------------------
 // UI event handlers
@@ -139,6 +135,7 @@ void loop()
     mqtt_publish("imageroller/action", "roll");
     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
+  checkImages();
   mqtt_loop();
 }
 
