@@ -131,6 +131,9 @@ void loop()
   DFRobot_PAJ7620U2::eGesture_t gesture = gestureSensor.getGesture();
   if (gesture != gestureSensor.eGestureNone)
   {
+    imagePayload = "";
+    image2Payload = "";
+    image3Payload = "";
     rip->start();
     mqtt_publish("imageroller/action", "roll");
     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
