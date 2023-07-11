@@ -29,7 +29,7 @@ void event_handler_button(struct _lv_obj_t *obj, lv_event_t event)
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
-    
+     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
 }
 
@@ -83,7 +83,6 @@ unsigned long next_image_task = 0;
 
 void loop()
 {
-  mqtt_subscribe("imageroller/action");
   if (next_lv_task < millis())
   {
     lv_task_handler();
@@ -103,6 +102,8 @@ void loop()
   }
   mqtt_loop();
 }
+
+
 
 // ----------------------------------------------------------------------------
 // MAIN SETUP
