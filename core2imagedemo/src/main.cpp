@@ -29,6 +29,7 @@ void event_handler_button(struct _lv_obj_t *obj, lv_event_t event)
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
+    
   }
 }
 
@@ -44,7 +45,8 @@ void init_image_roller()
 // ----------------------------------------------------------------------------
 // MQTT callback
 // ----------------------------------------------------------------------------
-void mqtt_callback(char *topic, byte *payload, unsigned int length) {
+void mqtt_callback(char *topic, byte *payload, unsigned int length)
+{
   // Parse Payload into String
   char *buf = (char *)malloc((sizeof(char) * (length + 1)));
   memcpy(buf, payload, length);
@@ -67,7 +69,6 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length) {
   }
 }
 
-
 // ----------------------------------------------------------------------------
 // UI event handlers
 // ----------------------------------------------------------------------------
@@ -88,19 +89,21 @@ void loop()
     lv_task_handler();
     next_lv_task = millis() + 5;
   }
-  if (next_image_task < millis()) {
+  if (next_image_task < millis())
+  {
     rip->next();
     next_image_task = rip->next_timeout();
   }
-  
   DFRobot_PAJ7620U2::eGesture_t gesture = gestureSensor.getGesture();
   if (gesture != gestureSensor.eGestureNone)
   {
     rip->start();
     mqtt_publish("imageroller/action", "roll");
+     mqtt_publish("imageroller/image", rip->get_name_of_image().c_str());
   }
   mqtt_loop();
 }
+
 // ----------------------------------------------------------------------------
 // MAIN SETUP
 // ----------------------------------------------------------------------------
